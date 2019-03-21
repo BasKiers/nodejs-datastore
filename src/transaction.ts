@@ -252,7 +252,7 @@ class Transaction extends DatastoreRequest {
           callback(null, resp);
         });
   }
-
+  
   /**
    * Create a query for the specified kind. See {module:datastore/query} for all
    * of the available methods.
@@ -291,8 +291,11 @@ class Transaction extends DatastoreRequest {
    *   });
    * });
    */
-  createQuery(namespace: string, kind?: string|string[]): Query {
-    return this.datastore.createQuery.call(this, namespace, kind as string[]);
+  createQuery(): Datastore["createQuery"] {
+    return this.datastore.createQuery.apply(
+      this,
+      Array.prototype.slice.call(arguments),
+    );
   }
 
   delete(): Promise<CommitResponse>;
